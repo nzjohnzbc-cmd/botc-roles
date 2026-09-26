@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>角色技能说明 · Character Reference</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cinzel+Decorative:wght@700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Noto+Serif+SC:wght@400;600;700&display=swap');
+
+  :root{
+    --stone-0:#e7e1d3;
+    --stone-1:#d7cfba;
+    --stone-2:#bfb59d;
+    --ink:#2a2420;
+    --ink-soft:#5a5045;
+    --gold:#9c7a3c;
+    --gold-bright:#c79a4b;
+    --blue-deep:#1c3554;
+    --blue-mid:#2c517d;
+    --red-deep:#6e1c1c;
+    --red-mid:#9c2c2c;
+    --purple-deep:#4a3763;
+    --card-bg:#f2ecdd;
+    --shadow:rgba(20,15,8,0.35);
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at top, rgba(255,250,235,0.15), transparent 60%),
+      linear-gradient(160deg,var(--stone-0),var(--stone-2) 60%,var(--stone-1));
+    background-attachment:fixed;
+    color:var(--ink);
+    font-family:'Crimson Text','Noto Serif SC',serif;
+    padding:0 0 80px;
+    min-height:100vh;
+  }
+
+  .lang-en body, [data-lang="en"]{
+  }
+
+  header.hero{
+    position:relative;
+    padding:56px 24px 40px;
+    text-align:center;
+    overflow:hidden;
+    border-bottom:3px double var(--gold);
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.25), transparent 65%);
+  }
+
+  header.hero::before, header.hero::after{
+    content:"";
+    position:absolute;
+    top:14px; bottom:14px;
+    width:1px;
+    background:linear-gradient(var(--gold),transparent 90%);
+    opacity:0.5;
+  }
+  header.hero::before{left:36px;}
+  header.hero::after{right:36px;}
+
+  .clockface{
+    width:64px;height:64px;margin:0 auto 14px;
+    border:2px solid var(--gold);
+    border-radius:50%;
+    position:relative;
+    background:radial-gradient(circle,var(--card-bg),var(--stone-2));
+  }
+  .clockface .hand{
+    position:absolute; left:50%; top:50%;
+    width:2px; background:var(--ink); transform-origin:bottom center;
+  }
+  .clockface .hand.h{height:16px; transform:translate(-50%,-100%) rotate(35deg);}
+  .clockface .hand.m{height:22px; transform:translate(-50%,-100%) rotate(160deg);}
+  .clockface .pin{
+    position:absolute; left:50%; top:50%; width:5px; height:5px;
+    background:var(--red-deep); border-radius:50%; transform:translate(-50%,-50%);
+  }
+
+  h1.title{
+    font-family:'Cinzel Decorative','Cinzel',serif;
+    font-size:clamp(28px,5vw,44px);
+    letter-spacing:0.04em;
+    margin:0 0 6px;
+    color:var(--ink);
+  }
+  h1.title .sub{
+    display:block;
+    font-family:'Cinzel',serif;
+    font-size:0.4em;
+    letter-spacing:0.25em;
+    color:var(--ink-soft);
+    margin-top:8px;
+    text-transform:uppercase;
+  }
+
+  .tagline{
+    font-style:italic;
+    color:var(--ink-soft);
+    font-size:15px;
+    max-width:520px;
+    margin:14px auto 0;
+    line-height:1.6;
+  }
+
+  .lang-toggle{
+    margin:26px auto 0;
+    display:inline-flex;
+    border:1px solid var(--gold);
+    border-radius:999px;
+    background:var(--card-bg);
+    box-shadow:0 3px 10px var(--shadow) inset, 0 2px 6px var(--shadow);
+    overflow:hidden;
+  }
+  .lang-toggle button{
+    font-family:'Cinzel',serif;
+    font-size:13px;
+    letter-spacing:0.08em;
+    padding:9px 24px;
+    border:none;
+    background:transparent;
+    color:var(--ink-soft);
+    cursor:pointer;
+    transition:background 0.25s, color 0.25s;
+  }
+  .lang-toggle button.active{
+    background:linear-gradient(180deg,var(--gold-bright),var(--gold));
+    color:#2a1f10;
+    font-weight:700;
+  }
+
+  .tally-row{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-top:18px;
+  }
+  .tally-chip{
+    font-family:'Cinzel',serif;
+    font-size:13px;
+    letter-spacing:0.04em;
+    padding:8px 16px;
+    border-radius:999px;
+    border:1px solid var(--gold);
+    background:var(--card-bg);
+    box-shadow:0 2px 6px var(--shadow);
+    color:var(--ink);
+  }
+  .tally-chip b{font-size:15px;}
+  .tally-chip.good{border-color:var(--blue-mid); color:var(--blue-deep);}
+  .tally-chip.evil{border-color:var(--red-mid); color:var(--red-deep);}
+  .tally-chip.trav{border-color:var(--purple-deep); color:var(--purple-deep);}
+
+  .reset-btn{
+    display:block;
+    margin:14px auto 0;
+    font-family:'Cinzel',serif;
+    font-size:11px;
+    letter-spacing:0.08em;
+    padding:7px 18px;
+    border-radius:999px;
+    border:1px solid var(--stone-2);
+    background:transparent;
+    color:var(--ink-soft);
+    cursor:pointer;
+  }
+  .reset-btn:hover{border-color:var(--red-mid); color:var(--red-deep);}
+
+  .count-badge{
+    font-family:'Cinzel',serif;
+    font-size:12px;
+    color:var(--ink-soft);
+    background:var(--card-bg);
+    border:1px solid var(--stone-2);
+    border-radius:999px;
+    padding:3px 10px;
+    white-space:nowrap;
+  }
+
+  main{
+    max-width:900px;
+    margin:0 auto;
+    padding:36px 20px 0;
+  }
+
+  section.category{
+    margin-bottom:46px;
+  }
+
+  .cat-header{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:18px;
+  }
+  .cat-header .line{
+    flex:1;
+    height:1px;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  }
+  .cat-header h2{
+    font-family:'Cinzel',serif;
+    font-size:20px;
+    letter-spacing:0.12em;
+    margin:0;
+    white-space:nowrap;
+    padding:4px 6px;
+  }
+  .cat-header .en-cat{
+    font-size:12px;
+    letter-spacing:0.2em;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    display:block;
+    margin-top:2px;
+    font-family:'Cinzel',serif;
+    text-align:center;
+  }
+
+  .cat-townsfolk h2, .cat-outsider h2{color:var(--blue-deep);}
+  .cat-minion h2, .cat-demon h2{color:var(--red-deep);}
+  .cat-traveller h2{color:var(--purple-deep);}
+
+  .role-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .role-card{
+    position:relative;
+    background:var(--card-bg);
+    border:1px solid var(--stone-2);
+    border-left:5px solid var(--gold);
+    border-radius:6px;
+    padding:14px 18px;
+    box-shadow:0 2px 6px var(--shadow);
+    transition:box-shadow 0.2s, transform 0.2s, background 0.2s;
+    cursor:pointer;
+    user-select:none;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .role-card:hover{
+    box-shadow:0 4px 14px var(--shadow);
+    transform:translateY(-1px);
+  }
+  .role-card.marked{
+    background:#e9f2e4;
+    border-left-color:#3f7d3f;
+  }
+  .role-card.marked::after{
+    content:"✓";
+    position:absolute;
+    top:10px; right:12px;
+    width:22px; height:22px;
+    border-radius:50%;
+    background:#3f7d3f;
+    color:#fff;
+    font-size:13px;
+    font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 1px 4px var(--shadow);
+  }
+  .tally-hint{
+    font-size:12px;
+    color:var(--ink-soft);
+    text-align:center;
+    margin:-8px 0 18px;
+    font-style:italic;
+  }
+
+  .cat-townsfolk .role-card, .cat-outsider .role-card{border-left-color:var(--blue-mid);}
+  .cat-minion .role-card, .cat-demon .role-card{border-left-color:var(--red-mid);}
+  .cat-traveller .role-card{border-left-color:var(--purple-deep);}
+
+  .role-head{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin-bottom:6px;
+    flex-wrap:wrap;
+  }
+  .role-icon{
+    width:30px;height:30px;
+    flex:none;
+    display:inline-flex;
+    align-items:center;justify-content:center;
+    border-radius:50%;
+    border:1.5px solid var(--gold);
+    background:var(--stone-0);
+    font-size:15px;
+  }
+  .role-name-zh{
+    font-family:'Cinzel','Noto Serif SC',serif;
+    font-weight:700;
+    font-size:17px;
+    color:var(--ink);
+  }
+  .role-name-en{
+    font-family:'Cinzel',serif;
+    font-size:13px;
+    color:var(--ink-soft);
+    letter-spacing:0.03em;
+  }
+  .role-name-en::before{content:"· ";}
+
+  .ability{
+    font-size:15.5px;
+    line-height:1.65;
+    margin:4px 0 0;
+  }
+  .footnote{
+    font-size:13px;
+    font-style:italic;
+    color:var(--ink-soft);
+    margin-top:6px;
+    padding-top:6px;
+    border-top:1px dashed var(--stone-2);
+    line-height:1.55;
+  }
+
+  [data-en]{display:none;}
+  [data-lang="en"] [data-zh]{display:none;}
+  [data-lang="en"] [data-en]{display:block;}
+  [data-lang="en"] .ability[data-en]{display:block;}
+  [data-lang="en"] .footnote[data-en]{display:block;}
+
+  footer.legend{
+    max-width:900px;
+    margin:20px auto 0;
+    padding:18px 22px;
+    border:1px solid var(--gold);
+    border-radius:6px;
+    background:var(--card-bg);
+    font-size:13.5px;
+    line-height:1.7;
+    color:var(--ink-soft);
+  }
+  footer.legend b{color:var(--ink);}
+
+  @media (max-width:520px){
+    header.hero{padding:40px 14px 28px;}
+    .cat-header h2{font-size:17px;}
+    .role-card{padding:12px 14px;}
+  }
+</style>
+</head>
+<body data-lang="zh">
+
+<header class="hero">
+  <div class="clockface">
+    <div class="hand h"></div>
+    <div class="hand m"></div>
+    <div class="pin"></div>
+  </div>
+  <h1 class="title">角色技能说明<span class="sub">Character Reference</span></h1>
+  <p class="tagline">血染钟楼 · 暗流涌动　Blood on the Clocktower · Trouble Brewing</p>
+  <div class="lang-toggle">
+    <button id="btn-zh" class="active" onclick="setLang('zh')">中文</button>
+    <button id="btn-en" onclick="setLang('en')">ENGLISH</button>
+  </div>
+  <div class="tally-row">
+    <span class="tally-chip good" data-zh>蓝方 善良 <b id="tally-good">0/17</b></span>
+    <span class="tally-chip good" data-en style="display:none;">Good <b id="tally-good-en">0/17</b></span>
+    <span class="tally-chip evil" data-zh>红方 邪恶 <b id="tally-evil">0/5</b></span>
+    <span class="tally-chip evil" data-en style="display:none;">Evil <b id="tally-evil-en">0/5</b></span>
+    <span class="tally-chip trav" data-zh>旅行者 <b id="tally-trav">0/5</b></span>
+    <span class="tally-chip trav" data-en style="display:none;">Traveller <b id="tally-trav-en">0/5</b></span>
+  </div>
+  <button class="reset-btn" data-zh onclick="resetMarks()">重置标记</button>
+  <button class="reset-btn" data-en onclick="resetMarks()" style="display:none;">RESET</button>
+</header>
+<p class="tally-hint" data-zh>点击角色卡片，标记为"已知是此角色在场"，上方与每个分类会自动统计数量。</p>
+<p class="tally-hint" data-en style="display:none;">Tap a role card to mark it as confirmed in play — the totals above and per category update automatically.</p>
+
+<main>
+
+  <section class="category cat-townsfolk">
+    <div class="cat-header"><div class="line"></div><h2>村民<span class="en-cat">Townsfolk</span></h2><span class="count-badge" id="cnt-townsfolk">0/13</span><div class="line"></div></div>
+    <div class="role-list">
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">🧺</span><span class="role-name-zh">洗衣妇</span><span class="role-name-en">Washerwoman</span></div>
+        <p class="ability" data-zh>首个夜晚，你会得知两名玩家其中一位是村民，且知道他的角色具体是什么。</p>
+        <p class="ability" data-en>You start knowing that 1 of 2 players is a particular Townsfolk.</p>
+        <p class="footnote" data-zh>两名玩家和具体展示的角色均由说书人指定而非你选择；另一位玩家有可能也是村民；如果你中毒或醉酒，你得知的两名玩家可能都不是村民，或者得知了村民玩家却得知到错误的角色。</p>
+        <p class="footnote" data-en>Both players and the character shown are chosen by the Storyteller, not you. The other player might also be a Townsfolk. If poisoned or drunk, both players might not be the Townsfolk, or you might learn the right player but the wrong character.</p>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">📖</span><span class="role-name-zh">图书管理员</span><span class="role-name-en">Librarian</span></div>
+        <p class="ability" data-zh>首个夜晚，你会得知两名玩家其中一位是外来者，且知道他的角色具体是什么，或得知本局游戏没有外来者。</p>
+        <p class="ability" data-en>You start knowing that 1 of 2 players is a particular Outsider (or that zero are in play).</p>
+        <p class="footnote" data-zh>两名玩家和具体展示的角色均由说书人指定而非你选择；另一位玩家有可能也是外来者；如果你中毒或醉酒，你得知的两名玩家可能都不是外来者，或者得知了外来者玩家却得知到错误的角色。</p>
+        <p class="footnote" data-en>Both players and the character shown are chosen by the Storyteller, not you. The other player might also be an Outsider. If poisoned or drunk, both players might not be the Outsider, or you might learn the right player but the wrong character.</p>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">🔍</span><span class="role-name-zh">调查员</span><span class="role-name-en">Investigator</span></div>
+        <p class="ability" data-zh>首个夜晚，你会得知两名玩家其中一位是爪牙，且知道他的角色具体是什么。</p>
+        <p class="ability" data-en>You start knowing that 1 of 2 players is a particular Minion.</p>
+        <p class="footnote" data-zh>两名玩家和具体展示的角色均由说书人指定而非你选择；另一位玩家有可能也是爪牙；如果你中毒或醉酒，你得知的两名玩家可能都不是爪牙，或者得知了爪牙玩家却得知到错误的角色。</p>
+        <p class="footnote" data-en>Both players and the character shown are chosen by the Storyteller, not you. The other player might also be a Minion. If poisoned or drunk, both players might not be the Minion, or you might learn the right player but the wrong character.</p>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">🔮</span><span class="role-name-zh">占卜师</span><span class="role-name-en">Fortune Teller</span></div>
+        <p class="ability" data-zh>每个夜晚，选择两名玩家：你会得知这两名玩家中是否有恶魔。会有一名玩家被你的技能视为恶魔。</p>
+        <p class="ability" data-en>Each night, choose 2 players: you learn if either is a Demon. A player will register as a Demon to your ability.</p>
+        <p class="footnote" data-zh>这名善良玩家由说书人开局时指定且不会在游戏中途改变；当你选择时，无论你选择了真恶魔还是这名善良玩家作为两名玩家之一，说书人都会告诉你这两名玩家之中有恶魔。你得知的信息只有是或否。</p>
+        <p class="footnote" data-en>This good player is chosen by the Storyteller at the start and never changes. Whenever you pick the real Demon or this good player, the Storyteller says a Demon is among them. You only learn yes or no.</p>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">👨‍🍳</span><span class="role-name-zh">厨师</span><span class="role-name-en">Chef</span></div>
+        <p class="ability" data-zh>在首个夜晚，你会得知有多少对邪恶玩家为邻座。</p>
+        <p class="ability" data-en>You start knowing how many pairs of evil players there are.</p>
+        <p class="footnote" data-zh>例：如果3名邪恶玩家挨着坐，厨师会得知2；如果4名邪恶玩家挨着坐，厨师会得知3。</p>
+        <p class="footnote" data-en>Example: if 3 evil players sit together, the Chef learns 2; if 4 evil players sit together, the Chef learns 3.</p>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">💙</span><span class="role-name-zh">共情者</span><span class="role-name-en">Empath</span></div>
+        <p class="ability" data-zh>每个夜晚，你会得知你左右两侧最靠近你的存活玩家有几个是邪恶的。</p>
+        <p class="ability" data-en>Each night, you learn how many of your 2 alive neighbours are evil.</p>
+        <p class="footnote" data-zh>会跳过离你最近但死亡的玩家。</p>
+        <p class="footnote" data-en>Dead players nearest to you are skipped.</p>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">⛏️</span><span class="role-name-zh">掘墓人</span><span class="role-name-en">Undertaker</span></div>
+        <p class="ability" data-zh>除首夜外的每个夜晚，你会得知上一个白天因处决而死去的玩家的角色。</p>
+        <p class="ability" data-en>Each night (except the first), you learn which character died by execution today.</p>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">⛪</span><span class="role-name-zh">僧侣</span><span class="role-name-en">Monk</span></div>
+        <p class="ability" data-zh>除首夜外的每个夜晚，选择一名除自己外的玩家：恶魔的能力今晚不会对那名玩家生效。</p>
+        <p class="ability" data-en>Each night (except the first), choose a player (not yourself): they are safe from the Demon tonight.</p>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">🐦</span><span class="role-name-zh">守鸦人</span><span class="role-name-en">Ravenkeeper</span></div>
+        <p class="ability" data-zh>如果你在夜晚死去，你会被唤醒并选择一名玩家：你会得知那名玩家的角色。</p>
+        <p class="ability" data-en>If you die at night, you are woken to choose a player: you learn their character.</p>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">💍</span><span class="role-name-zh">圣女</span><span class="role-name-en">Virgin</span></div>
+        <p class="ability" data-zh>当你第一次被提名时，如果提名者是村民，那么那名玩家立刻被处决。</p>
+        <p class="ability" data-en>The 1st time you are nominated, if the nominator is a Townsfolk, they are executed immediately.</p>
+        <p class="footnote" data-zh>当有玩家被处决后，白天阶段将会立刻结束。</p>
+        <p class="footnote" data-en>The day ends immediately once a player has been executed.</p>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">🏹</span><span class="role-name-zh">杀手</span><span class="role-name-en">Slayer</span></div>
+        <p class="ability" data-zh>每局游戏限一次，在白天时，你可以公开选择一名玩家：如果那名玩家是恶魔，那么该玩家会死去。</p>
+        <p class="ability" data-en>Once per game, during the day, publicly choose a player: if they are the Demon, they die.</p>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">🏛️</span><span class="role-name-zh">市长</span><span class="role-name-en">Mayor</span></div>
+        <p class="ability" data-zh>如果在白天只有三名玩家存活且没有执行处决，你的阵营获胜。如果你在夜晚死去，另一位玩家可能会代替你死去。</p>
+        <p class="ability" data-en>If only 3 players live &amp; no execution occurs, your team wins. If you die at night, another player might die instead.</p>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">🛡️</span><span class="role-name-zh">士兵</span><span class="role-name-en">Soldier</span></div>
+        <p class="ability" data-zh>恶魔的能力对你无效。</p>
+        <p class="ability" data-en>You are safe from the Demon.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="category cat-outsider">
+    <div class="cat-header"><div class="line"></div><h2>外来者<span class="en-cat">Outsider</span></h2><span class="count-badge" id="cnt-outsider">0/4</span><div class="line"></div></div>
+    <div class="role-list">
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">🎩</span><span class="role-name-zh">管家</span><span class="role-name-en">Butler</span></div>
+        <p class="ability" data-zh>每个夜晚，选择一名除自己外的玩家：明天你只能在那名玩家参与投票的处决中投票。</p>
+        <p class="ability" data-en>Each night, choose a player (not yourself): tomorrow, you may only vote if they vote too.</p>
+        <p class="footnote" data-zh>你选择的玩家投票后，你并非一定要跟着他投票。</p>
+        <p class="footnote" data-en>You are not required to vote just because the chosen player votes.</p>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">🍺</span><span class="role-name-zh">酒鬼</span><span class="role-name-en">Drunk</span></div>
+        <p class="ability" data-zh>你会抽取到一个不在场的村民角色，但实际上你不是村民，你的村民能力也不会产生任何效果。</p>
+        <p class="ability" data-en>You think you are a Townsfolk character, but you are not. You do not know you are the Drunk.</p>
+        <p class="footnote" data-zh>如果你抽到会获取信息的角色，你可能会获得正确信息，也有可能会获得错误信息。</p>
+        <p class="footnote" data-en>If you are given a character that gains information, you might receive correct or incorrect information.</p>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">🕶️</span><span class="role-name-zh">隐士</span><span class="role-name-en">Recluse</span></div>
+        <p class="ability" data-zh>你可能会被视为一名邪恶角色（爪牙或恶魔），即使你已经死亡。</p>
+        <p class="ability" data-en>You might register as evil &amp; as a Minion or Demon, even if dead.</p>
+        <p class="footnote" data-zh>调查员可能得知隐士和另一玩家里有任意一种爪牙；占卜师选择隐士和另一玩家时可能会得知这两名玩家中有恶魔。</p>
+        <p class="footnote" data-en>The Investigator might learn that the Recluse and another player include a particular Minion. The Fortune Teller might learn that the Recluse and another player include a Demon.</p>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">🕊️</span><span class="role-name-zh">圣徒</span><span class="role-name-en">Saint</span></div>
+        <p class="ability" data-zh>如果你因为处决而死亡，你的阵营失败。</p>
+        <p class="ability" data-en>If you die by execution, your team loses.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="category cat-minion">
+    <div class="cat-header"><div class="line"></div><h2>爪牙<span class="en-cat">Minion</span></h2><span class="count-badge" id="cnt-minion">0/4</span><div class="line"></div></div>
+    <div class="role-list">
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">🧪</span><span class="role-name-zh">下毒者</span><span class="role-name-en">Poisoner</span></div>
+        <p class="ability" data-zh>每个夜晚，选择一名玩家：那名玩家今晚和明天白天会中毒。</p>
+        <p class="ability" data-en>Each night, choose a player: they are poisoned tonight and tomorrow day.</p>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">💋</span><span class="role-name-zh">荡妇</span><span class="role-name-en">Scarlet Woman</span></div>
+        <p class="ability" data-zh>如果有五名或更多玩家存活且恶魔死去，你会变成恶魔。</p>
+        <p class="ability" data-en>If there are 5 or more players alive &amp; the Demon dies, you become the Demon.</p>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">🗡️</span><span class="role-name-zh">间谍</span><span class="role-name-en">Spy</span></div>
+        <p class="ability" data-zh>每个夜晚，你可以查看魔法书。你可能会被视为一名善良角色（村民或外来者），即使你已经死亡。</p>
+        <p class="ability" data-en>Each night, you see the Grimoire. You might register as good &amp; as a Townsfolk or Outsider, even if dead.</p>
+        <p class="footnote" data-zh>魔法书≈上帝视角，会知道谁是什么角色，曾经在夜晚或白天触发了什么效果。</p>
+        <p class="footnote" data-en>The Grimoire is the god's-eye view: it shows every player's character and what effects triggered, day or night.</p>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">🎓</span><span class="role-name-zh">男爵</span><span class="role-name-en">Baron</span></div>
+        <p class="ability" data-zh>场上初始配置时会有两名外来者替换掉两名村民。</p>
+        <p class="ability" data-en>There are extra Outsiders in play. (+2 Outsiders)</p>
+        <p class="footnote" data-zh>例：11人游戏的配置是7村民1外来者2爪牙1恶魔，如果爪牙有男爵，则会变成5村民3外来者2爪牙1恶魔。</p>
+        <p class="footnote" data-en>Example: an 11-player game is normally 7 Townsfolk, 1 Outsider, 2 Minions, 1 Demon. With the Baron, it becomes 5 Townsfolk, 3 Outsiders, 2 Minions, 1 Demon.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="category cat-demon">
+    <div class="cat-header"><div class="line"></div><h2>恶魔<span class="en-cat">Demon</span></h2><span class="count-badge" id="cnt-demon">0/1</span><div class="line"></div></div>
+    <div class="role-list">
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">🔱</span><span class="role-name-zh">小恶魔</span><span class="role-name-en">Imp</span></div>
+        <p class="ability" data-zh>除首夜外的每个夜晚，选择一名玩家杀死。如果你在夜晚自杀，一位爪牙会变成恶魔。</p>
+        <p class="ability" data-en>Each night (except the first), choose a player: they die. If you kill yourself this way, a Minion becomes the Imp.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="category cat-traveller">
+    <div class="cat-header"><div class="line"></div><h2>旅行者<span class="en-cat">Traveller</span></h2><span class="count-badge" id="cnt-traveller">0/5</span><div class="line"></div></div>
+    <div class="role-list">
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">🐐</span><span class="role-name-zh">替罪羊</span><span class="role-name-en">Scapegoat</span></div>
+        <p class="ability" data-zh>如果你的阵营中有一名玩家将被处决，你可能会代替他被处决。</p>
+        <p class="ability" data-en>If a player of your alignment is executed, you might be executed instead.</p>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">📜</span><span class="role-name-zh">乞丐</span><span class="role-name-en">Beggar</span></div>
+        <p class="ability" data-zh>你不能投票，除非有死去的玩家愿意把他的投票权让给你。如果你拿到了一个死去玩家的投票权，你会得知他的角色。你不会醉酒，也不会中毒。</p>
+        <p class="ability" data-en>You can't vote unless a dead player gives you their vote. You learn a player's character if they give you their vote. You cannot be poisoned or drunk.</p>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">💎</span><span class="role-name-zh">官员</span><span class="role-name-en">Bureaucrat</span></div>
+        <p class="ability" data-zh>每个夜晚，选择一名除你以外的玩家：在明天白天，他的投票将被记作3票。</p>
+        <p class="ability" data-en>Each night, choose a player (not yourself): their vote counts as 3 votes tomorrow.</p>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">🗝️</span><span class="role-name-zh">小偷</span><span class="role-name-en">Thief</span></div>
+        <p class="ability" data-zh>每个夜晚，选择一名除你以外的玩家：明天白天，他的投票会被记作负数。</p>
+        <p class="ability" data-en>Each night, choose a player (not yourself): their vote counts negatively tomorrow.</p>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head"><span class="role-icon">🔫</span><span class="role-name-zh">枪手</span><span class="role-name-en">Gunslinger</span></div>
+        <p class="ability" data-zh>每个白天，在第一次处决投票结束后，你可以选择一名投票的玩家，让他立刻死去，之后继续处决投票。</p>
+        <p class="ability" data-en>Each day, after the first vote has taken place, you may choose a player who voted: they die.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="legend">
+    <p data-zh><b>1.</b> 村民和外来者是善良玩家（蓝方），爪牙和恶魔是邪恶玩家（红方）。<br><b>2.</b> 中毒和醉酒会让你失去所有能力，如果你能获取信息，则可能获取错误信息。<br><b>3.</b> 即使你不是某个角色，你也可以做出该角色的相关行为，说书人会配合你进行这些行为以使别人认为你可能真的是该角色（如杀手的公开选择）。</p>
+    <p data-en style="display:none;"><b>1.</b> Townsfolk and Outsiders are good (blue team); Minions and Demons are evil (red team).<br><b>2.</b> Poison and drunkenness cause you to lose all abilities — if you would gain information, you might gain false information instead.<br><b>3.</b> Even if you are not a certain character, you may act as if you were; the Storyteller will play along so others may believe you really are that character (e.g. the Slayer's public choice).</p>
+  </footer>
+
+</main>
+
+<script>
+function setLang(lang){
+  document.body.setAttribute('data-lang', lang);
+  document.getElementById('btn-zh').classList.toggle('active', lang==='zh');
+  document.getElementById('btn-en').classList.toggle('active', lang==='en');
+  document.querySelectorAll('footer.legend p').forEach(p=>{
+    if(p.hasAttribute('data-zh')) p.style.display = (lang==='zh') ? 'block' : 'none';
+    if(p.hasAttribute('data-en')) p.style.display = (lang==='en') ? 'block' : 'none';
+  });
+  document.querySelectorAll('.tally-chip, .tally-hint, .reset-btn').forEach(el=>{
+    if(el.hasAttribute('data-zh')) el.style.display = (lang==='zh') ? '' : 'none';
+    if(el.hasAttribute('data-en')) el.style.display = (lang==='en') ? '' : 'none';
+  });
+}
+
+// ---- Role tally: tap a card to mark it as confirmed in play ----
+const STORAGE_KEY = 'botc-marks-v1';
+
+function roleKey(card){
+  const en = card.querySelector('.role-name-en');
+  return en ? en.textContent.replace(/^·\s*/,'').trim() : null;
+}
+
+function loadMarks(){
+  try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+  catch(e){ return {}; }
+}
+
+function saveMarks(marks){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(marks)); }catch(e){}
+}
+
+function applyMarks(){
+  const marks = loadMarks();
+  document.querySelectorAll('.role-card').forEach(card=>{
+    const key = roleKey(card);
+    card.classList.toggle('marked', !!(key && marks[key]));
+  });
+  updateCounts();
+}
+
+function updateCounts(){
+  const cats = [
+    {sel:'.cat-townsfolk .role-card', id:'cnt-townsfolk'},
+    {sel:'.cat-outsider .role-card', id:'cnt-outsider'},
+    {sel:'.cat-minion .role-card', id:'cnt-minion'},
+    {sel:'.cat-demon .role-card', id:'cnt-demon'},
+    {sel:'.cat-traveller .role-card', id:'cnt-traveller'},
+  ];
+  let good=[0,0], evil=[0,0], trav=[0,0];
+  cats.forEach(c=>{
+    const all = document.querySelectorAll(c.sel);
+    const marked = document.querySelectorAll(c.sel+'.marked');
+    const badge = document.getElementById(c.id);
+    if(badge) badge.textContent = marked.length+'/'+all.length;
+    if(c.id==='cnt-townsfolk' || c.id==='cnt-outsider'){ good[0]+=marked.length; good[1]+=all.length; }
+    if(c.id==='cnt-minion' || c.id==='cnt-demon'){ evil[0]+=marked.length; evil[1]+=all.length; }
+    if(c.id==='cnt-traveller'){ trav[0]+=marked.length; trav[1]+=all.length; }
+  });
+  ['tally-good','tally-good-en'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent = good[0]+'/'+good[1]; });
+  ['tally-evil','tally-evil-en'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent = evil[0]+'/'+evil[1]; });
+  ['tally-trav','tally-trav-en'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent = trav[0]+'/'+trav[1]; });
+}
+
+function resetMarks(){
+  saveMarks({});
+  applyMarks();
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('.role-card').forEach(card=>{
+    card.addEventListener('click', function(){
+      const key = roleKey(card);
+      if(!key) return;
+      const marks = loadMarks();
+      marks[key] = !marks[key];
+      saveMarks(marks);
+      card.classList.toggle('marked', marks[key]);
+      updateCounts();
+    });
+  });
+  applyMarks();
+});
+</script>
+
+</body>
+</html>
